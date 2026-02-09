@@ -3,81 +3,140 @@ const morgan = require('morgan')
 
 const app = express()
 
+// ---------- Middleware ----------
 app.use(express.json())
 
-morgan.token('body', (req) => JSON.stringify(req.body))
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+// Custom Morgan Token for POST Body
+morgan.token('body', (req) => {
+  return JSON.stringify(req.body)
+})
 
-const requestLogger = (req, res, next) => {
-  console.log('Method:', req.method)
-  console.log('Path:  ', req.path)
-  console.log('Body:  ', req.body)
+// Morgan Logger
+app.use(
+  morgan(':method :url :status :res[content-length] - :response-time ms :body')
+)
+
+// Request Logger Middleware
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:', request.path)
+  console.log('Body:', request.body)
   console.log('---')
   next()
 }
 
 app.use(requestLogger)
 
+// ---------- Data ----------
 let persons = [
-  { id: "1", name: "Arto Hellas", number: "040-123456" },
-  { id: "2", name: "Ada Lovelace", number: "39-44-5323523" },
-  { id: "3", name: "Dan Abramov", number: "12-43-234345" },
-  { id: "4", name: "Mary Poppendieck", number: "39-23-6423122" }
+  {
+    id: "1",
+    name: "Arto Hellas",
+    number: "040-123456"
+  },
+  {
+    id: "2",
+    name: "Ada Lovelace",
+    number: "39-44-5323523"
+  },
+  {
+    id: "3",
+    name: "Dan Abramov",
+    number: "12-43-234345"
+  },
+  {
+    id: "4",
+    name: "Mary Poppendieck",
+    number: "39-23-6423122"
+  }
 ]
 
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
+// ---------- Routes ----------
+
+// 3.1: Get All Persons
+app.get('/api/persons', (request, response) => {
+  response.json(persons)
 })
 
-app.get('/info', (req, res) => {
-  res.send(`
+// 3.2: Info Page
+app.get('/info', (request, response) => {
+  const time = new Date()
+
+  response.send(`
     <p>Phonebook has info for ${persons.length} people</p>
-    <p>${new Date()}</p>
+    <p>${time}</p>
   `)
 })
 
-app.get('/api/persons/:id', (req, res) => {
-  const person = persons.find(p => p.id === req.params.id)
+// 3.3: Get Single Person
+app.get('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+
+  const person = persons.find(p => p.id === id)
+
   if (person) {
-    res.json(person)
+    response.json(person)
   } else {
-    res.status(404).end()
+    response.status(404).end()
   }
 })
 
-app.delete('/api/persons/:id', (req, res) => {
-  persons = persons.filter(p => p.id !== req.params.id)
-  res.status(204).end()
+// 3.4: Delete Person
+app.delete('/api/persons/:id', (request, response) => {
+  const id = request.params.id
+
+  persons = persons.filter(p => p.id !== id)
+
+  response.status(204).end()
 })
 
-app.post('/api/persons', (req, res) => {
-  const body = req.body
+// Generate ID
+const generateId = () => {
+  return Math.floor(Math.random() * 1000000).toString()
+}
 
+// 3.5 & 3.6: Add Person
+app.post('/api/persons', (request, response) => {
+
+  const body = request.body
+
+  // Missing name or number
   if (!body.name || !body.number) {
-    return res.status(400).json({ error: 'name or number missing' })
+    return response.status(400).json({
+      error: 'name or number missing'
+    })
   }
 
-  if (persons.find(p => p.name === body.name)) {
-    return res.status(400).json({ error: 'name must be unique' })
+  // Check duplicate name
+  const exists = persons.find(p => p.name === body.name)
+
+  if (exists) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    })
   }
 
   const person = {
-    id: Math.floor(Math.random() * 1000000).toString(),
+    id: generateId(),
     name: body.name,
     number: body.number
   }
 
-  persons.push(person)
-  res.json(person)
+  persons = persons.concat(person)
+
+  response.json(person)
 })
 
-const unknownEndpoint = (req, res) => {
-  res.status(404).json({ error: 'unknown endpoint' })
+// ---------- Unknown Endpoint ----------
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(unknownEndpoint)
 
+// ---------- Server ----------
 const PORT = 3001
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
