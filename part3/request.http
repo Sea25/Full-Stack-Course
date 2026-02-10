@@ -26,3 +26,11 @@ Content-Type: application/json
   "name": "Sona",
   "number": "123456"
 }
+### 3.8 Test
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "MorganTest",
+  "number": "7778889999"
+}
