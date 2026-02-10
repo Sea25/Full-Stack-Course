@@ -9,3 +9,20 @@ Content-Type: application/json
   "name": "Sona",
   "number": "9998887776"
 }
+
+### Missing Field
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Alex"
+}
+
+### Duplicate Name
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Sona",
+  "number": "123456"
+}
