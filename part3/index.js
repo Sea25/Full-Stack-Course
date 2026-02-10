@@ -1,8 +1,11 @@
 const express = require('express')
+const morgan = require('morgan')
+
 const app = express()
 
 // Middleware to read JSON body
 app.use(express.json())
+app.use(morgan('tiny'))
 
 // Phonebook data
 let persons = [
