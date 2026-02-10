@@ -1,2 +1,11 @@
 ### Delete Arto (id = 1)
 DELETE http://localhost:3001/api/persons/1
+
+### Add New Person
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Sona",
+  "number": "9998887776"
+}
