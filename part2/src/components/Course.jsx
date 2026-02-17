@@ -1,7 +1,9 @@
-const Header = ({ name }) => {
-  return <h2>{name}</h2>
+// shows course name
+const Header = ({ course }) => {
+  return <h1>{course.name}</h1>
 }
 
+// shows single part
 const Part = ({ part }) => {
   return (
     <p>
@@ -10,6 +12,7 @@ const Part = ({ part }) => {
   )
 }
 
+// shows all parts
 const Content = ({ parts }) => {
   return (
     <div>
@@ -20,22 +23,14 @@ const Content = ({ parts }) => {
   )
 }
 
-const Total = ({ parts }) => {
-  const total = parts.reduce((sum, part) => sum + part.exercises, 0)
-
-  return <p><strong>Total of {total} exercises</strong></p>
-}
-
-
+// main component
 const Course = ({ course }) => {
   return (
     <div>
-      <Header name={course.name} />
+      <Header course={course} />
       <Content parts={course.parts} />
-      <Total parts={course.parts} />
     </div>
   )
 }
-
 
 export default Course
