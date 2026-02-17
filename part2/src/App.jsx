@@ -6,6 +6,8 @@ const App = () => {
   ])
 
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+
 
   const addPerson = (event) => {
   event.preventDefault()
@@ -18,7 +20,10 @@ const App = () => {
     return
   }
 
-  setPersons(persons.concat({ name: newName }))
+  setPersons(persons.concat({ name: newName, number: newNumber }))
+setNewName('')
+setNewNumber('')
+
   setNewName('')
 }
 
@@ -27,24 +32,38 @@ const App = () => {
     setNewName(event.target.value)
   }
 
+  const handleNumberChange = (event) => {
+  setNewNumber(event.target.value)
+}
+
+
   return (
     <div>
       <h2>Phonebook</h2>
 
       <form onSubmit={addPerson}>
-        <div>
-          name: 
-          <input value={newName} onChange={handleNameChange} />
-        </div>
+  <div>
+    name:
+    <input value={newName} onChange={handleNameChange} />
+  </div>
 
-        <button type="submit">add</button>
-      </form>
+  <div>
+    number:
+    <input value={newNumber} onChange={handleNumberChange} />
+  </div>
+
+  <button type="submit">add</button>
+</form>
+
 
       <h2>Numbers</h2>
 
       {persons.map(person =>
-        <p key={person.name}>{person.name}</p>
-      )}
+  <p key={person.name}>
+    {person.name} {person.number}
+  </p>
+)}
+
     </div>
   )
 }
