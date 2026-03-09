@@ -1,0 +1,70 @@
+Warning: The allowCypressEnv configuration option is enabled. This allows any browser code to read values from Cypress.env(). This is insecure and will be removed in a future major version.
+
+1. Replace Cypress.env() calls with cy.env() (for sensitive values) or Cypress.expose() (for public configuration)
+2. Set allowCypressEnv: false in your Cypress configuration to disable Cypress.env()
+
+Learn more: https://on.cypress.io/cypress-env-migration
+
+
+================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        15.10.0                                                                        │
+  │ Browser:        Electron 138 (headless)                                                        │
+  │ Node Version:   v20.20.0 (/home/saf369/.nvm/versions/node/v20.20.0/bin/node)                   │
+  │ Specs:          1 found (blog_app.cy.js)                                                       │
+  │ Searched:       cypress/e2e/blog_app.cy.js                                                     │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  blog_app.cy.js                                                                  (1 of 1)
+
+
+  Blog app
+    ✓ Login form is shown (578ms)
+    Login
+      ✓ succeeds with correct credentials (910ms)
+      ✓ fails with wrong credentials (860ms)
+    When logged in
+      ✓ A blog can be created (1578ms)
+      and a blog exists
+        ✓ it can be liked (1782ms)
+        ✓ it can be deleted (1823ms)
+        ✓ only the creator can see the delete button (2428ms)
+      and multiple blogs exist
+        ✓ blogs are ordered by likes (2700ms)
+
+
+  8 passing (13s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        8                                                                                │
+  │ Passing:      8                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     12 seconds                                                                       │
+  │ Spec Ran:     blog_app.cy.js                                                                   │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  blog_app.cy.js                           00:12        8        8        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        00:12        8        8        -        -        -  
+
